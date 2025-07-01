@@ -1,1 +1,24 @@
-srini.txt.1
+from flask import Flask, request, render_template_string
+from user_agents import parse
+
+app = Flask(__name__)
+
+@app.route('/')
+def show_form():
+    user_agent = parse(request.headers.get('User-Agent'))
+    if user_agent.is_mobile or user_agent.is_tablet:
+        return "<h2>Sorry, this exam is only accessible on desktop devices.</h2>"
+    return render_template_string("""
+        <html>
+        <head>
+            <title>Online Exam</title>
+            <style>body { font-family: Arial; text-align: center; }</style>
+        </head>
+        <body>
+            <h1>Online Exam</h1>
+            <iframe src="YOUR_GOOGLE_FORM_EMBED_LINK" width="100%" height="800px"></iframe>
+        </body>
+        </html>
+    """)
+if __name__ == '__main__':
+    app.run(debug=True)srini.txt.1
